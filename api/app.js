@@ -21,7 +21,8 @@ var Evenment = sequelize.define('events', {
         title: Sequelize.STRING,
         description: Sequelize.STRING,
         date_start: Sequelize.STRING,
-        date_end: Sequelize.STRING
+        date_end: Sequelize.STRING,
+        organisateur_id: Sequelize.INTEGER
     }
 );
 
@@ -32,8 +33,7 @@ var Organisateur = sequelize.define('organisateurs', {
 );
 
 Organisateur.hasMany(Evenment,  {foreignKey: 'organisateur_id' })
-Evenment.hasOne(Organisateur)
-
+Evenment.hasOne(Organisateur,  {as: 'organisateur', foreignKey: 'organisateur_id'})
 app.use(restful(sequelize, {
   endpoint: '/api/v1',
   allowed: new Array()
