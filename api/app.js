@@ -1,43 +1,68 @@
-var express   = require('express')
-  , bodyParser = require('body-parser')
-  , Sequelize = require('sequelize')
-  , http      = require('http')
-  , restful   = require('sequelize-restful')
-  , config    = require('./config')
-  , sequelize = new Sequelize(config.db.name, config.db.user, config.db.password, {
-            host: config.db.host,
-            logging: console.log,
-            define: {
-                timestamps: false
-            }
-        })
-  , app = express();
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+//var env = require('node-env-file');
 
-var port = process.env.PORT || 3000;
-app.use(bodyParser());
+var app = express();
 
 
-var Evenment = sequelize.define('events', {
-        title: Sequelize.STRING,
-        description: Sequelize.STRING,
-        date_start: Sequelize.STRING,
-        date_end: Sequelize.STRING,
-        organisateur_id: Sequelize.INTEGER
-    }
-);
 
-var Organisateur = sequelize.define('organisateurs', {
-        name: Sequelize.STRING,
-        email: Sequelize.STRING
-    }
-);
+// connect to database
+//app.db = mongoose.connect(process.env.MONGODB_URI);
+app.db = mongoose.connect("mongodb://event:event@waffle.modulusmongo.net:27017/ug6yjiVi");
 
-Organisateur.hasMany(Evenment,  {foreignKey: 'organisateur_id' })
-Evenment.hasOne(Organisateur,  {as: 'organisateur', foreignKey: 'organisateur_id'})
-app.use(restful(sequelize, {
-  endpoint: '/api/v1',
-  allowed: new Array()
-}));
+// view engine setup - this app uses Hogan-Express
+// https://github.com/vol4ok/hogan-express
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'html');
+//app.set('layout','layout');
+//app.engine('html', require('hogan-express'));;
 
-app.listen(port);
-console.log('Magic happens on port ' + port);
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// our routes will be contained in routes/index.js
+var routes = require('./routes/index');
+app.use('/', routes);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.json({
+      message: err.message,
+      error: err
+    });
+  });
+
+
+// production error handler
+// no stacktraces leaked to user
+/*app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.json({
+    message: err.message,
+    error: {}
+  });
+});*/
+
+
+module.exports = app;
