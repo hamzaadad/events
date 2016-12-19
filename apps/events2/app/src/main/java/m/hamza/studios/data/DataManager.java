@@ -1,5 +1,8 @@
 package m.hamza.studios.data;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,14 +45,18 @@ public class DataManager {
 
     public Single<List<Event>> getEventList(int limit){
         return mMvpStarterService.getEventList(limit)
-                .flatMap(new Func1<EventListResponse, Single<? extends List<Event>>>() {
+                .flatMap(new Func1<EventListResponse, Single<List<Event>>>() {
                     @Override
-                    public Single<? extends List<Event>> call(EventListResponse eventListResponse) {
+                    public Single<List<Event>> call(EventListResponse eventListResponse) {
                         List<Event> events = new ArrayList<>();
-                        for (Event event : eventListResponse.results) {
+                        if(eventListResponse.status.equalsIgnoreCase("ok")){
+                            Log.e("HAMZA", "OK this is an error even if status is ok");
+                            //Toast.makeText(get)
+                        }
+                        for (Event event : eventListResponse.events) {
                             events.add(event);
                         }
-                        return null;
+                        return Single.just(events);
                     }
                 });
     }

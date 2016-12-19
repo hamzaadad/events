@@ -7,5 +7,6 @@ import java.util.List;
  */
 
 public class EventListResponse {
-    public List<Event> results;
+    public List<Event> events;
+    public String status;
 }

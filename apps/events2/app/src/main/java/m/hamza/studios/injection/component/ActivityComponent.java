@@ -5,6 +5,8 @@ import m.hamza.studios.injection.PerActivity;
 import m.hamza.studios.injection.module.ActivityModule;
 import m.hamza.studios.ui.base.BaseActivity;
 import m.hamza.studios.ui.detail.DetailActivity;
+import m.hamza.studios.ui.events.EventActivity;
+import m.hamza.studios.ui.home.HomeActivty;
 import m.hamza.studios.ui.main.MainActivity;
 
 @PerActivity
@@ -15,4 +17,8 @@ public interface ActivityComponent {
     void inject(MainActivity mainActivity);
 
     void inject(DetailActivity detailActivity);
+
+    void inject(EventActivity eventActivity);
+
+    void inject(HomeActivty homeActivity);
 }

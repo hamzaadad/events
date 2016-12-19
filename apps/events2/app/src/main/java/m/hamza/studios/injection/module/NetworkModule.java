@@ -53,7 +53,7 @@ public class NetworkModule {
     @Provides
     Retrofit provideRetrofit(OkHttpClient client, Gson gson) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.POKEAPI_API_URL)
+                .baseUrl(BuildConfig.EVENT_API_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

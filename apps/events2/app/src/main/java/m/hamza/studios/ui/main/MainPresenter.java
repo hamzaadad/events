@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import m.hamza.studios.data.DataManager;
 import m.hamza.studios.injection.ConfigPersistent;
 import m.hamza.studios.ui.base.BasePresenter;
-import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
